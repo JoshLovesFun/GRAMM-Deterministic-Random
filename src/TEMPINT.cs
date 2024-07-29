@@ -19,6 +19,20 @@ namespace GRAMM_2001
     partial class Program
     {
         /// <summary>
+        /// Seed value used in GRAMM deterministic mode.
+        /// The value of 160991 was chosen because the seed produces a first NextDouble() that is
+        /// approximately halfway within the 10-degree sector width for the first weather situation.
+        /// For example, if the sector ranges from 260 to 270 degrees, this seed value will produce 265.
+        /// For weather situations after that, the NextDouble() will operate as expected, with each weather
+        /// situation producing a different wind direction between 260 and 270 degrees in this example.
+        /// But the direction will be the same between model runs.
+        /// When not running GRAMM in deterministic mode, you could get a different value each time
+        /// the program is run for the same weather situation, such as 262, 267, 260, 270, etc.
+        /// </summary>
+        private const int FixedSeedValue = 160991;
+        private static readonly Random FixedRnd = new(FixedSeedValue);
+
+        /// <summary>
         /// This routine computes the initial wind- and temperature fields based on either
         /// the file meteopgt.all representing a single point measurement and stability class or
         /// on detailled profile and point measurements using a specific input format -> the file name is free in this case
@@ -29,7 +43,7 @@ namespace GRAMM_2001
         public static void Temp_INIT(int NI, int NJ, int NK)
         {
             //local variables declaration block
-            Random rnd = new Random();
+            Random rnd;
             string VARI;
             string VAIR;
             string ZEILE;
@@ -275,6 +289,15 @@ namespace GRAMM_2001
                 }
 
                 //RANDOM wind direction within 10° Sector width to avoid finger like structures with point sources
+                if (Program.FIXEDRND == 1)
+                {
+                    rnd = FixedRnd;
+                }
+                else
+                {
+                    rnd = new Random();
+                }
+
                 if (TIMESERIES == 0)
                 {
                     WINDDIR = WINDDIR - SECTORWIDTH / 20 + SECTORWIDTH / 10 * rnd.NextDouble();
