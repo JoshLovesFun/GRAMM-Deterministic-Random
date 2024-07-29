@@ -1194,6 +1194,10 @@ namespace GRAMM_2001
         ///</summary>
         public static Int32 IOUT;
         ///<summary>
+        ///Fixed random seed value
+        ///</summary>
+        public static Int32 FIXEDRND;
+        ///<summary>
         ///Total simulation time
         ///</summary>
         public static double DTI;

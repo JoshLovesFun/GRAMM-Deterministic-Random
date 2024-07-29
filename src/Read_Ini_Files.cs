@@ -513,6 +513,10 @@ namespace GRAMM_2001
                         text[1] = text[1].Trim();
                         text[1] = text[1].Replace(".", decsep);
                         IOUT = Convert.ToInt32(text[1]);
+                        text = myreader.ReadLine().Split(new char[] { '!', ':' });
+                        text[1] = text[1].Trim();
+                        text[1] = text[1].Replace(".", decsep);
+                        FIXEDRND = Convert.ToInt32(text[1]);
                     }
                 }
             }
